@@ -1,77 +1,52 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.jpg";
-import alto800 from "./alto800.jpg";
-import baleno from "./baleno.jpg";
-import dzire from "./dzire.jpg";
-import ecco from "./ecco.jpg";
-import ertiga from "./ertiga.jpg";
-import grandVitara from "./grand vitara.jpg";
+import venella from "./venella.jpg";
+import chocochip from "./chocochip.jpg";
+import coconut from "./coconut.jpg";
+import mango from "./mango.jpg";
+import pista from "./pista.jpg";
+import strawberry from "./strawberry.jpg";
+import handeladdToCart from "./MyCart";
+import Cart from "./MyCart";
+import axios from "axios";
+import Navuser from "./NavUser";
 
 function Products() {
+  const [cart, setCart] = useState([]);
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+  });
+  let totalAmt = 0;
+
+  const addToCart = (name, price) => {
+    const product = { name: name, price: price };
+    setProduct(product);
+    let url = "http://localhost:9595/add-product";
+    axios.post(url, product).then((response) => {
+      console.log(response.data);
+      alert("registration successful");
+    });
+    setCart([...cart, product]);
+    console.log(cart);
+    alert("Product added to cart!");
+  };
+
+  function addProductToDB(event) {
+    // event.preventDefault();
+    // console.log(product);
+    // let url = "http://localhost:9595/add-product";
+    // axios.post(url, product).then((response) => {
+    //   console.log(response.data);
+    //   alert("registration successful");
+    // });
+  }
+
   return (
     <div>
-      {/* navigation */}
-      <section id="header">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-1">
-          <div className="container-fluid">
-            <Link to="/home" className="navbar-brand">
-              <img
-                src={logo}
-                alt="Logo"
-                className="img-fluid"
-                style={{ maxHeight: "50px" }}
-              />
-            </Link>
-            <h1 style={{ fontFamily: "cursive" }}>Polar Bear</h1>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav ms-auto">
-                <li className="nav-item">
-                  <Link
-                    to="/home"
-                    className="nav-link active"
-                    aria-current="page"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/products" className="nav-link">
-                    <b>Products</b>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/review" className="nav-link">
-                    Reviews
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/contact" className="nav-link">
-                    Contact us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </section>
+     <Navuser/>
 
       {/* Products */}
       <section
@@ -88,52 +63,59 @@ function Products() {
           <div className="row">
             <div className="col-lg-4 col-md-12 mb-4">
               {/*  */}
-              <div className="card">
-                <div className="bg-image" data-mdb-ripple-color="light">
-                  <img src={alto800} className="w-100 h-100" alt="" />
-                  <a href="#!">
-                    <div className="mask">
-                      <div className="d-flex justify-content-start align-items-end h-100">
-                        <h5>
-                          <span className="badge bg-primary ms-2">New</span>
-                        </h5>
+              <form onClick={addProductToDB}>
+                <div className="card">
+                  <div className="bg-image" data-mdb-ripple-color="light">
+                    <img src={venella} className="w-100 h-100" alt="" />
+                    <a href="#!">
+                      <div className="mask">
+                        <div className="d-flex justify-content-start align-items-end h-100">
+                          <h5>
+                            <span className="badge bg-primary ms-2">New</span>
+                          </h5>
+                        </div>
                       </div>
-                    </div>
-                    <div className="hover-overlay">
-                      <div
-                        className="mask"
-                        style={{ backgroundColor: "rgba(251, 251, 251, 0.15)" }}
-                      ></div>
-                    </div>
-                  </a>
+                      <div className="hover-overlay">
+                        <div
+                          className="mask"
+                          style={{
+                            backgroundColor: "rgba(251, 251, 251, 0.15)",
+                          }}
+                        ></div>
+                      </div>
+                    </a>
+                  </div>
+                  <div className="card-body">
+                    <a href="" className="text-reset">
+                      <h5
+                        className="card-title mb-3"
+                        style={{ fontfamily: "sans-seri" }}
+                      >
+                        <strong name="name">Butter Scotch</strong>
+                      </h5>
+                    </a>
+                    <a href="" className="text-reset">
+                      <h6 className="mb-3" name="price">
+                        Rs. 555
+                      </h6>
+                    </a>
+                    <input
+                      type="button"
+                      value="Add to Cart"
+                      className="bg-warning"
+                      onClick={() => addToCart("Butter Scotch", 555)}
+                      style={{ borderRadius: "5px" }}
+                    />
+                  </div>
                 </div>
-                <div className="card-body">
-                  <a href="" className="text-reset">
-                    <h5
-                      className="card-title mb-3"
-                      style={{ fontfamily: "sans-seri" }}
-                    >
-                      <strong>Butter Scotch</strong>
-                    </h5>
-                  </a>
-                  <a href="" className="text-reset">
-                    <h6 className="mb-3">Rs. 555</h6>
-                  </a>
-                  <input
-                    type="button"
-                    value="Add to Cart"
-                    className="bg-warning"
-                    style={{ borderRadius: "5px" }}
-                  />
-                </div>
-              </div>
+              </form>
             </div>
 
             {/*  */}
             <div className="col-lg-4 col-md-6 mb-4">
               <div className="card">
                 <div className="bg-image" data-mdb-ripple-color="light">
-                  <img src={baleno} className="w-100 h-100" alt="" />
+                  <img src={chocochip} className="w-100 h-100" alt="" />
                   <a href="#!">
                     <div className="mask">
                       <div className="d-flex justify-content-start align-items-end h-100">
@@ -155,15 +137,18 @@ function Products() {
                 <div className="card-body">
                   <a href="" className="text-reset">
                     <h5 className="card-title mb-3">
-                      <strong>Choco Chip</strong>
+                      <strong name="name">Choco Chip</strong>
                     </h5>
                   </a>
 
-                  <h6 className="mb-3">Rs. 500</h6>
+                  <h6 className="mb-3" name="price" value="500">
+                    Rs. 500
+                  </h6>
                   <input
                     type="button"
                     value="Add to Cart"
                     className="bg-warning"
+                    onClick={() => addToCart("Choco Chip", 500)}
                     style={{ borderRadius: "5px" }}
                   />
                 </div>
@@ -174,7 +159,7 @@ function Products() {
             <div className="col-lg-4 col-md-6 mb-4">
               <div className="card">
                 <div className="bg-image" data-mdb-ripple-color="light">
-                  <img src={dzire} className="w-100 h-100" alt="" />
+                  <img src={coconut} className="w-100 h-100" alt="" />
                   <a href="#!">
                     <div className="mask">
                       <div className="d-flex justify-content-start align-items-end h-100">
@@ -194,18 +179,21 @@ function Products() {
                 <div className="card-body">
                   <a href="" className="text-reset">
                     <h5 className="card-title mb-3">
-                      <strong>Coconut</strong>
+                      <strong name="name">Coconut</strong>
                     </h5>
                   </a>
 
                   <h6 className="mb-3">
                     <s>Rs. 600</s>
-                    <strong className="ms-2 text-danger">Rs. 550</strong>
+                    <strong className="ms-2 text-danger" name="price">
+                      Rs. 550
+                    </strong>
                   </h6>
                   <input
                     type="button"
                     value="Add to Cart"
                     className="bg-warning"
+                    onClick={() => addToCart("Coconut ", 550)}
                     style={{ borderRadius: "5px" }}
                   />
                 </div>
@@ -216,7 +204,7 @@ function Products() {
             <div className="col-lg-4 col-md-12 mb-4">
               <div className="card">
                 <div className="bg-image" data-mdb-ripple-color="light">
-                  <img src={ecco} className="w-100 h-100" alt="" />
+                  <img src={mango} className="w-100 h-100" alt="" />
                   <a href="#!">
                     <div className="mask">
                       <div className="d-flex justify-content-start align-items-end h-100">
@@ -239,7 +227,7 @@ function Products() {
                 <div className="card-body">
                   <a href="" className="text-reset">
                     <h5 className="card-title mb-3">
-                      <strong>Mango</strong>
+                      <strong name="name">Mango</strong>
                     </h5>
                   </a>
                   <a href="" className="text-danger">
@@ -247,23 +235,26 @@ function Products() {
                   </a>
                   <h6 className="mb-3">
                     <s>Rs. 400</s>
-                    <strong className="ms-2 text-danger">Rs. 350</strong>
+                    <strong className="ms-2 text-danger" name="price">
+                      Rs. 350
+                    </strong>
                   </h6>
                   <input
                     type="button"
                     value="Add to Cart"
                     className="bg-warning"
+                    onClick={() => addToCart("Mango", 350)}
                     style={{ borderRadius: "5px" }}
                   />
                 </div>
               </div>
             </div>
 
-            {/* ertiga */}
+            {/* pista */}
             <div className="col-lg-4 col-md-6 mb-4">
               <div className="card">
                 <div className="bg-image" data-mdb-ripple-color="light">
-                  <img src={ertiga} className="w-100 h-80" alt="" />
+                  <img src={pista} className="w-100 h-80" alt="" />
                   <a href="#!">
                     <div className="mask">
                       <div className="d-flex justify-content-start align-items-end h-100">
@@ -286,17 +277,20 @@ function Products() {
                 <div className="card-body">
                   <a href="" className="text-reset">
                     <h5 className="card-title mb-3">
-                      <strong>Pista</strong>
+                      <strong name="name">Pista</strong>
                     </h5>
                   </a>
                   <a href="" className="text-reset">
                     <p>Deal of the Day</p>
                   </a>
-                  <h6 className="mb-3">Rs. 850</h6>
+                  <h6 className="mb-3" name="price">
+                    Rs. 850
+                  </h6>
                   <input
                     type="button"
                     value="Add to Cart"
                     className="bg-warning"
+                    onClick={() => addToCart("Pista", 850)}
                     style={{ borderRadius: "5px" }}
                   />
                 </div>
@@ -307,7 +301,7 @@ function Products() {
             <div className="col-lg-4 col-md-6 mb-4">
               <div className="card">
                 <div className="bg-image " data-mdb-ripple-color="light">
-                  <img src={grandVitara} className="w-100 h-100" alt="" />
+                  <img src={strawberry} className="w-100 h-100" alt="" />
                   <a href="#!">
                     <div className="mask">
                       <div className="d-flex justify-content-start align-items-end h-100">
@@ -331,7 +325,7 @@ function Products() {
                 <div className="card-body">
                   <a href="" className="text-reset">
                     <h5 className="card-title mb-3">
-                      <strong>Strawberry</strong>
+                      <strong name="name">Strawberry</strong>
                     </h5>
                   </a>
                   <a href="" className="text-reset">
@@ -339,12 +333,15 @@ function Products() {
                   </a>
                   <h6 className="mb-3">
                     <s>Rs. 130</s>
-                    <strong className="ms-2 text-danger">Rs. 120</strong>
+                    <strong className="ms-2 text-danger" name="price">
+                      Rs. 120
+                    </strong>
                   </h6>
                   <input
                     type="button"
                     value="Add to Cart"
                     className="bg-warning"
+                    onClick={() => addToCart("Strawberry", 120)}
                     style={{ borderRadius: "5px" }}
                   />
                 </div>
@@ -353,6 +350,25 @@ function Products() {
           </div>
         </div>
       </section>
+
+      {/* My Cart */}
+      <div className="cart">
+        <h2>Cart</h2>
+        {cart.length === 0 ? (
+          <p>No items in the cart</p>
+        ) : (
+          <ul>
+            {cart.map((item, index) => (
+              <li key={index}>
+                {item.name} - ${item.price}
+                <br />totalAmt=${totalAmt + item.price}
+              </li>
+            ))}
+          </ul>
+        )}
+        <br />
+        <p>Total Amount : ${totalAmt}</p>
+      </div>
 
       {/* Footer */}
       <div className="my-5">

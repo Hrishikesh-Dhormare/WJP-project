@@ -5,6 +5,7 @@ import title from "./title.png";
 import { Link } from "react-router-dom";
 import React from "react";
 import MyRegistration from "./registration";
+import axios from "axios";
 
 function EmailLogin() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function EmailLogin() {
   let [user, setUser] = useState({
     email: "",
     password: "",
+    role: "",
   });
 
   let handlerPasswordAction = (e) => {
@@ -27,35 +29,32 @@ function EmailLogin() {
     setUser(newuser);
   };
 
-  let loginAction = async () => {
-    try {
-      formRef.current.classList.add("was-validated");
-      let formStatus = formRef.current.checkValidity();
-      if (!formStatus) {
-        return;
+  function handleInput(event) {
+    setUser((prevValue) => {
+      return {
+        ...prevValue,
+        [event.target.name]: event.target.value,
+      };
+    });
+  }
+
+  function loginAction(event) {
+    // BACKEND :: ...
+    event.preventDefault();
+    let url = `http://localhost:9595/app-login?email=${user.email}&password=${user.password}`;
+    axios.get(url).then((response) => {
+      console.log(response.data);
+      setUser(response.data);
+      console.log(user.role);
+      if (user.role == "Admin") {
+        navigate("/adminhome");
+      } else if (user.role == "User") {
+        navigate("/home");
+      } else {
+        alert("Invalid Credentials");
       }
-
-      // BACKEND :: ...
-      let url = `http://localhost:4000/login-by-get?email=${user.email}&password=${user.password}`;
-      let res = await fetch(url);
-
-      if (res.status == 500) {
-        let erroMessage = await res.text();
-        throw new Error(erroMessage);
-      }
-
-      localStorage.setItem("loginStatus", "true");
-      navigate("/home", { replace: true });
-    } catch (err) {
-      alert(err.message);
-      setIsError(true);
-    } finally {
-      setTimeout(() => {
-        setIsError(false);
-        setIsSuccess(false);
-      }, 5000);
-    }
-  };
+    });
+  }
 
   return (
     <>
@@ -124,15 +123,15 @@ function EmailLogin() {
         style={{ marginTop: "100px" }}
       >
         <div className="col-sm-12 col-md-6">
-          <div className="fs-2 text-center">User Login</div>
+          <div className="fs-2 text-center">App Login</div>
 
-          <form ref={formRef} className="needs-validation">
+          <form onSubmit={loginAction} className="needs-validation">
             <input
               type="email"
               className="form-control form-control-lg mb-2"
               placeholder="Enter Email"
-              value={user.email}
-              onChange={handlerEmailAction}
+              name="email"
+              onChange={handleInput}
               required
             />
 
@@ -140,17 +139,34 @@ function EmailLogin() {
               type="password"
               className="form-control form-control-lg mb-2"
               placeholder="Enter password"
-              value={user.password}
-              onChange={handlerPasswordAction}
+              name="password"
+              onChange={handleInput}
               required
             />
-
-            <input
-              type="button"
-              value="Login"
-              className="w-100 btn btn-lg btn-secondary"
-              onClick={loginAction}
-            />
+            <h6>Login as</h6>
+            <label>
+              <input
+                type="radio"
+                name="role"
+                value={"Admin"}
+                checked={user.role === "Admin"}
+                onChange={handleInput}
+              />
+              Admin
+            </label>
+            <label className="ms-4">
+              <input
+                type="radio"
+                name="role"
+                value={"User"}
+                checked={user.role === "User"}
+                onChange={handleInput}
+              />
+              User
+            </label>
+            <button type="submit" className="w-100 btn btn-lg btn-secondary">
+              Login
+            </button>
             <a href="/forget">forgot password</a>
             <div className="mt-3">Don't have an account? Click on Register</div>
             <Link to="/registration">

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navuser from "./NavUser";
+
 function UserList() {
   let navigate = useNavigate();
   const [userList, setUserList] = useState([]);
@@ -9,7 +11,7 @@ function UserList() {
   }, []);
 
   const getAllUserAction = async () => {
-    let url = `http://localhost:4000/find-all-order`;
+    let url = `http://localhost:9595/find-all-order`;
     let res = await fetch(url);
     let list = await res.json();
 
@@ -42,6 +44,8 @@ function UserList() {
 
   return (
     <>
+      <Navuser />
+      <br/>
       <div className="row justify-content-center">
         <div className="col-sm-12 col-md-11">
           <h3>User List</h3>

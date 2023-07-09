@@ -16,6 +16,7 @@ import AdminHome from "./assets/adminhome";
 import UserList from "./assets/UserList";
 import AboutAdmin from "./assets/aboutadmin";
 import AdminLogin from "./assets/loginadmin";
+import MyCart from "./assets/MyCart";
 function App() {
   return (
     <>
@@ -35,7 +36,7 @@ function App() {
           <Route path="/adminhome" element={<AdminHome />} />
           <Route path="/userlist" element={<UserList />} />
           <Route path="/aboutadmin" element={<AboutAdmin />} />
-          <Route path="/loginadmin" element={<AdminLogin />} />
+          <Route path="/mycart" element={<MyCart />} />
         </Routes>
       </BrowserRouter>
     </>

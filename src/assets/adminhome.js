@@ -53,15 +53,15 @@ function AdminHome() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/loginadmin" className="nav-link">
+                  <Link to="/login" className="nav-link">
                     Login
                   </Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/products" className="nav-link">
                     Products
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <Link to="/review" className="nav-link">
                     Reviews
