@@ -116,6 +116,7 @@ function MyRegistration() {
               className="form-control form-control-lg mb-2 mt-1"
               placeholder="Enter name"
               name="name"
+              pattern="^[A-Za-z\s]+$"
               onChange={handleInput}
               required
             />
@@ -132,6 +133,7 @@ function MyRegistration() {
               className="form-control form-control-lg mb-2"
               placeholder="Enter password"
               name="password"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
               onChange={handleInput}
               required
             />
@@ -140,6 +142,7 @@ function MyRegistration() {
               className="form-control form-control-lg mb-2"
               placeholder="Enter Email"
               name="email"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               onChange={handleInput}
               required
             />
@@ -148,6 +151,7 @@ function MyRegistration() {
               className="form-control form-control-lg mb-2"
               placeholder="Enter mobile"
               name="contact"
+              // pattern="^ [0-9]{10}$"
               onChange={handleInput}
               required
             />
@@ -174,6 +178,8 @@ function MyRegistration() {
             >
               Submit
             </button>
+            <br/>
+            <p>Already User  <a href="/login"> click here</a></p>
           </form>
         </div>
       </div>

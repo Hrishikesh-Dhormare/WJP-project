@@ -20,7 +20,6 @@ function Products() {
   const [product, setProduct] = useState({
     name: "",
     price: "",
-    customer: "",
   });
   const [customer, setCustomer] = useState({
     customerId: "",
@@ -67,20 +66,27 @@ function Products() {
   const addToCart = (name, price) => {
     
         // Adding product to DB
-        let url = "http://localhost:9595/add-product";
-        axios
-          .post(url, productData)
-          .then((response) => {
-            console.log(response.data);
-            setCart([...cart, productData]);
-            alert("Product added to cart!");
-          })
-          .catch((error) => {
-            setError("Error adding product to cart: " + error.message);
-            console.error(error);
-          });
-      
-  };
+        // let url = "http://localhost:9595/add-product";
+        // axios
+        //   .post(url, productData)
+        //   .then((response) => {
+        //     console.log(response.data);
+              const product = { name: name, price: price };
+             setCart([...cart, product]);
+             console.log(cart);
+             alert("Product added to cart!");
+           
+          // })
+          // .catch((error) => {
+          //   setError("Error adding product to cart: " + error.message);
+          //   console.error(error);
+          // });
+     let url = "http://localhost:9595/add-product";
+     axios.post(url, product).then((response) => {
+       console.log(response.data);
+       alert("registration successful");
+     });
+  }
 
   function addProductToDB(event) {
     event.preventDefault();
@@ -400,23 +406,23 @@ function Products() {
       </section>
 
       {/* My Cart */}
-      <div className="cart">
-        <h2>Cart</h2>
-        {cart.length === 0 ? (
-          <p>No items in the cart</p>
-        ) : (
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index}>
-                {item.name} - ${item.price}
-                <br />
-                totalAmt=${totalAmt + item.price}
-              </li>
-            ))}
-          </ul>
-        )}
-        <br />
-        <p>Total Amount : ${totalAmt}</p>
+      <div className="row justify-content-center align-items-center">
+        <div className="col-sm-10 col-md-10 card">
+          <h2>Cart</h2>
+          {cart.length === 0 ? (
+            <p>No items in the cart</p>
+          ) : (
+            <ul>
+              {cart.map((item, index) => (
+                <li key={index}>
+                  {item.name} - ${item.price}
+                  <br />
+                </li>
+              ))}
+            </ul>
+          )}
+          <br />
+        </div>
       </div>
 
       {/* Footer */}

@@ -52,6 +52,12 @@ function Bakery() {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/registration" className="nav-link">
+                    {/* <b>Login</b> */}
+                    Sign Up
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/login" className="nav-link">
                     {/* <b>Login</b> */}
                     Login
