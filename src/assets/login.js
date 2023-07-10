@@ -1,23 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./logo.jpg";
-import title from "./title.png";
 import { Link } from "react-router-dom";
 import React from "react";
-import MyRegistration from "./registration";
 import axios from "axios";
 
 function EmailLogin() {
   const navigate = useNavigate();
-  let formRef = useRef();
   let [isSuccess, setIsSuccess] = useState(false);
   let [isError, setIsError] = useState(false);
-
+  let [myJson, setMyJson] = useState([]);
   let [user, setUser] = useState({
     email: "",
     password: "",
     role: "",
+    customerId: "",
   });
+  let id;
+
+  useEffect(() => {
+    getAllUserAction();
+  }, []);
+
+   const getAllUserAction = async () => {
+     let url = `http://localhost:9595/find-by-email?email=${user.name}`;
+     try {
+       const response = await axios.get(url);
+       console.log(response.data);
+       setMyJson(response.data);
+      //  myJson.map((item, index) => {
+      //    { item.customerId }
+      //  });
+     } catch (error) {
+       console.error("Error retrieving user list:", error);
+     }
+   };
 
   let handlerPasswordAction = (e) => {
     let newuser = { ...user, password: e.target.value };
@@ -39,22 +56,52 @@ function EmailLogin() {
   }
 
   function loginAction(event) {
-    // BACKEND :: ...
     event.preventDefault();
     let url = `http://localhost:9595/app-login?email=${user.email}&password=${user.password}`;
-    axios.get(url).then((response) => {
-      console.log(response.data);
-      setUser(response.data);
-      console.log(user.role);
-      if (user.role == "Admin") {
-        navigate("/adminhome");
-      } else if (user.role == "User") {
-        navigate("/home");
-      } else {
-        alert("Invalid Credentials");
-      }
-    });
+
+    try {
+      axios.get(url).then((response) => {
+        console.log(response.data);
+        setUser(response.data);
+        if (user.role === "Admin") {
+          sessionStorage.setItem("id", myJson.customerId);
+          sessionStorage.setItem("useremail", user.email);
+          navigate("/adminhome");
+        } else if (user.role === "User") {
+          sessionStorage.setItem("id", myJson.customerId);
+          sessionStorage.setItem("useremail", user.email);
+          navigate("/home");
+        } else {
+          alert("Invalid Credentials");
+        }
+      });
+    } catch (error) {
+      console.error("Error occurred during login:", error);
+      // Handle error (e.g., display error message)
+    }
   }
+  // function loginAction(event) {
+  //   // BACKEND :: ...
+  //   event.preventDefault();
+  //   let url = `http://localhost:9595/app-login?email=${user.email}&password=${user.password}`;
+  //   axios.get(url).then((response) => {
+  //     console.log(response.data);
+  //     handleInput();
+  //     setUser(response.data);
+  //     console.log(user.customerId);
+  //     if (user.role == "Admin") {
+  //       sessionStorage.setItem("id", user.customerId);
+  //       sessionStorage.setItem("useremail", user.email);
+  //       navigate("/adminhome");
+  //     } else if (user.role == "User") {
+  //       sessionStorage.setItem("id", user.customerId);
+  //       sessionStorage.setItem("useremail", user.email);
+  //       navigate("/home");
+  //     } else {
+  //       alert("Invalid Credentials");
+  //     }
+  //   });
+  // }
 
   return (
     <>

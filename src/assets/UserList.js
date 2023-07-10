@@ -1,33 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navuser from "./NavUser";
+import axios from "axios";
 
 function UserList() {
   let navigate = useNavigate();
   const [userList, setUserList] = useState([]);
-
+  let [myJson, setMyJson] = useState([]);
   useEffect(() => {
     getAllUserAction();
   }, []);
 
   const getAllUserAction = async () => {
-    let url = `http://localhost:9595/find-all-order`;
-    let res = await fetch(url);
-    let list = await res.json();
-
-    setUserList([...list]);
+    let url = `http://localhost:9595/all-customer`;
+     try {
+       const response = await axios.get(url);
+       console.log(response.data);
+       setMyJson(response.data);
+     } catch (error) {
+       console.error("Error retrieving user list:", error);
+     }
   };
 
   const deleteUserAction = async (item) => {
-    try {
-      // backend call delete this user.
-      let url = `http://localhost:4000/delete-user?email=${item.email}`;
-      let res = await fetch(url);
+    // backend call delete this user.
+    let url = `http://localhost:9595/delete-customer-email?email=${item.email}`;
 
-      if (res.status === 500) {
-        let erroMessage = await res.text();
-        throw new Error(erroMessage);
-      }
+    try {
+      let res = await axios.get(url);
+      console.log(res.data);
+      setMyJson(res.data);
 
       alert("success");
 
@@ -45,14 +47,15 @@ function UserList() {
   return (
     <>
       <Navuser />
-      <br/>
+      <br />
       <div className="row justify-content-center">
         <div className="col-sm-12 col-md-11">
           <h3>User List</h3>
           <table className="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="#">Sr No.</th>
+                <th scope="col">customerId</th>
                 <th scope="col">Name</th>
                 <th scope="col">Password</th>
                 <th scope="col">Email</th>
@@ -61,13 +64,14 @@ function UserList() {
               </tr>
             </thead>
             <tbody>
-              {userList.map((item, index) => (
+              {myJson.map((item, index) => (
                 <tr>
                   <th scope="row">{index + 1}</th>
-                  <td className="text-capitalize">{item.username}</td>
+                  <td>{ item.customerId}</td>
+                  <td className="text-capitalize">{item.name}</td>
                   <td>*******</td>
                   <td>{item.email}</td>
-                  <td>{item.mobile}</td>
+                  <td>{item.contact}</td>
                   <td className="fs-5">
                     <input
                       type="button"

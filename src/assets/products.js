@@ -12,41 +12,89 @@ import handeladdToCart from "./MyCart";
 import Cart from "./MyCart";
 import axios from "axios";
 import Navuser from "./NavUser";
+import Cookies from "js-cookies";
 
 function Products() {
   const [cart, setCart] = useState([]);
+  const [error, setError] = useState(null);
   const [product, setProduct] = useState({
     name: "",
     price: "",
+    customer: "",
+  });
+  const [customer, setCustomer] = useState({
+    customerId: "",
+    name: "",
+    email: "",
+    customer: "",
+    contact: "",
+    address: "",
   });
   let totalAmt = 0;
+  let productData = {
+    name: "",
+    price: "",
+    customer: "",
+  };
+
+  // const addToCart = (name, price) => {
+  //   // const email = sessionStorage.getItem("useremail");
+  //   // let url1 = `http://localhost:9595/find-by-email?email=${email}`;
+  //   // axios.get(url1, { email: email }).then((response) => {
+  //   //   console.log(response.data);
+  //   //   const customer =JSON.parse(JSON.stringify(response.data));
+  //   //   const productData = {
+  //   //     name: name,
+  //   //     price: price,
+  //   //     customer: customer,
+  //   //   };
+  //   // })
+
+  //   //
+  //   let url = "http://localhost:9595/add-product";
+  //   try {
+  //       axios.post(url, productData).then((response) => {
+  //         console.log(response.data);
+  //         setCart([...cart, productData]);
+  //         alert("Product added to cart!");
+  //       });
+  //    } catch (error) {
+  //      console.error("Error retrieving user list:", error);
+  //    }
+   
+  // };
 
   const addToCart = (name, price) => {
-    const product = { name: name, price: price };
-    setProduct(product);
+    
+        // Adding product to DB
+        let url = "http://localhost:9595/add-product";
+        axios
+          .post(url, productData)
+          .then((response) => {
+            console.log(response.data);
+            setCart([...cart, productData]);
+            alert("Product added to cart!");
+          })
+          .catch((error) => {
+            setError("Error adding product to cart: " + error.message);
+            console.error(error);
+          });
+      
+  };
+
+  function addProductToDB(event) {
+    event.preventDefault();
+    console.log(product);
     let url = "http://localhost:9595/add-product";
     axios.post(url, product).then((response) => {
       console.log(response.data);
       alert("registration successful");
     });
-    setCart([...cart, product]);
-    console.log(cart);
-    alert("Product added to cart!");
-  };
-
-  function addProductToDB(event) {
-    // event.preventDefault();
-    // console.log(product);
-    // let url = "http://localhost:9595/add-product";
-    // axios.post(url, product).then((response) => {
-    //   console.log(response.data);
-    //   alert("registration successful");
-    // });
   }
 
   return (
     <div>
-     <Navuser/>
+      <Navuser />
 
       {/* Products */}
       <section
@@ -361,7 +409,8 @@ function Products() {
             {cart.map((item, index) => (
               <li key={index}>
                 {item.name} - ${item.price}
-                <br />totalAmt=${totalAmt + item.price}
+                <br />
+                totalAmt=${totalAmt + item.price}
               </li>
             ))}
           </ul>

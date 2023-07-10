@@ -70,13 +70,13 @@ function AdminHome() {
                 <li className="nav-item">
                   <Link to="/userlist" className="nav-link">
                     {/* <b>Order list</b> */}
-                    Order list
+                    User list
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/OrderList" className="nav-link">
                     {/* <b>User list</b> */}
-                    User list
+                    Order list
                   </Link>
                 </li>
               </ul>

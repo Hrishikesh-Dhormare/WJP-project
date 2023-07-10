@@ -1,45 +1,28 @@
 // import React, { useState } from "react";
-// import Products from "./products";
-// import axios from "axios";
+// import ProductList from "./ProductList";
 
-// function Cart() {
-//   const [cart, setCart] = useState([]);
-//   const [product, setProduct] = useState({
-//     name: "",
-//     price: "",
-//   });
+// function Cart({cart}) {
+//   const [cartItems, setCartItems] = useState([]);
 
-//   const addToCart = (name, price) => {
-//     const product = { name: name, price: price };
-//     setProduct(product);
-//     setCart([...cart, product]);
-//     console.log(cart);
-//     alert("Product added to cart!");
+//   const addToCart = (product) => {
+//     setCartItems((prevCartItems) => [...prevCartItems, product]);
 //   };
-
-//   function addProductToDB(event) {
-//     event.preventDefault();
-//     console.log(product);
-//     let url = "http://localhost:9595/add-product";
-//     axios.post(url, product).then((response) => {
-//       console.log(response.data);
-//     });
-//   }
 
 //   return (
 //     <div className="cart">
 //       <h2>Cart</h2>
-//       {cart.length === 0 ? (
+//       {cartItems.length === 0 ? (
 //         <p>No items in the cart</p>
 //       ) : (
 //         <ul>
-//           {cart.map((item, index) => (
-//             <li key={index}>
+//           {cartItems.map((item) => (
+//             <li key={item.id}>
 //               {item.name} - ${item.price}
 //             </li>
 //           ))}
 //         </ul>
 //       )}
+//       <ProductList addToCart={addToCart} />
 //     </div>
 //   );
 // }
@@ -49,7 +32,7 @@
 import React, { useState } from "react";
 import ProductList from "./ProductList";
 
-function Cart() {
+function Cart({ cart }) {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (product) => {
